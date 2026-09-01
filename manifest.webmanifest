@@ -1,0 +1,10 @@
+{
+  "name": "渋滞と財政",
+  "short_name": "city MVP",
+  "start_url": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0e1116",
+  "theme_color": "#0e1116",
+  "icons": []
+}

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0e1116">
+<title>渋滞と財政</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+
+  <header id="stats">
+    <div class="row primary">
+      <div class="stat"><span class="lbl">月</span><b id="s-month">0</b></div>
+      <div class="stat"><span class="lbl">人口</span><b id="s-pop">0</b></div>
+      <div class="stat"><span class="lbl">資金</span><b id="s-cash">0</b></div>
+      <div class="stat"><span class="lbl">収支</span><b id="s-net">0</b></div>
+    </div>
+    <div class="row secondary">
+      <div class="stat"><span class="lbl">平均通勤</span><b id="s-commute">—</b></div>
+      <div class="stat"><span class="lbl">渋滞</span><b id="s-cong">—</b></div>
+      <div class="stat"><span class="lbl">舗装</span><b id="s-cond">—</b></div>
+      <div class="stat demand"><span class="lbl">需要</span><span id="s-demand"></span></div>
+    </div>
+  </header>
+
+  <main id="board">
+    <canvas id="grid"></canvas>
+    <div id="hint">道路を敷いてから、その隣に建物を置く</div>
+  </main>
+
+  <nav id="tools"></nav>
+
+  <section id="controls">
+    <div class="time">
+      <button id="btn-step" class="ctl">＋1ヶ月</button>
+      <button id="btn-play" class="ctl" data-speed="0">▶ 再生</button>
+    </div>
+    <label class="slider">
+      <span>税率 <b id="v-tax">10%</b></span>
+      <input id="in-tax" type="range" min="0" max="25" step="1" value="10">
+    </label>
+    <label class="slider">
+      <span>道路予算 <b id="v-budget">100%</b></span>
+      <input id="in-budget" type="range" min="20" max="120" step="5" value="100">
+    </label>
+  </section>
+
+  <section id="panels">
+    <details id="finance">
+      <summary>収支の内訳</summary>
+      <div id="finance-body"></div>
+    </details>
+    <details id="diag" open>
+      <summary>渋滞の診断</summary>
+      <div id="diag-body"><p class="muted">1ヶ月進めると交通が計算される。</p></div>
+    </details>
+    <div id="warn" hidden></div>
+    <div id="log"></div>
+  </section>
+
+</div>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
