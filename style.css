@@ -50,7 +50,11 @@ b.good{color:var(--good)} b.warn{color:var(--warn)} b.bad{color:var(--bad)}
 }
 #grid{
   width:100%;height:100%;display:block;
-  border-radius:10px;background:#0b0e13;border:1px solid var(--line);touch-action:none;
+  border-radius:10px;background:#0b0e13;border:1px solid var(--line);
+  /* none にすると2本指も盤面が飲み込む。拡大すると画面が盤面で埋まるので、
+     そのとき縮小のピンチも吸われて戻れなくなる（iOS は user-scalable=no を無視する）。
+     pinch-zoom なら1本指の描画はアプリ、2本指はブラウザに渡る。 */
+  touch-action:pinch-zoom;
 }
 #hint{
   position:absolute;bottom:8px;left:50%;transform:translateX(-50%);

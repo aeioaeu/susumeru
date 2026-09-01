@@ -64,8 +64,19 @@ selectTool("street");
 // --- 盤面の操作 ---
 let dragStart = null;
 const cv = $("grid");
+// 盤面に乗っている指の数。2本目が来たらピンチなので、描きかけを捨てて
+// ブラウザの拡大縮小に譲る（捨てないと、縮めるつもりが道路になる）。
+const fingers = new Set();
+
+function cancelDrag() {
+  if (!dragStart && state.preview.length === 0) return;
+  dragStart = null; state.preview = [];
+  draw();
+}
 
 cv.addEventListener("pointerdown", (ev) => {
+  fingers.add(ev.pointerId);
+  if (fingers.size > 1) { cancelDrag(); return; }
   const c = board.cellAt(ev);
   if (!c) return;
   cv.setPointerCapture(ev.pointerId);
@@ -77,18 +88,19 @@ cv.addEventListener("pointerdown", (ev) => {
 });
 
 cv.addEventListener("pointermove", (ev) => {
-  if (!dragStart) return;
+  if (!dragStart || fingers.size > 1) return;
   const c = board.cellAt(ev);
   if (c) updatePreview(c);
 });
 
-cv.addEventListener("pointerup", () => {
+cv.addEventListener("pointerup", (ev) => {
+  fingers.delete(ev.pointerId);
   if (!dragStart) return;
   const cells = state.preview.slice();
   dragStart = null; state.preview = [];
   applyTool(cells);
 });
-cv.addEventListener("pointercancel", () => { dragStart = null; state.preview = []; draw(); });
+cv.addEventListener("pointercancel", (ev) => { fingers.delete(ev.pointerId); cancelDrag(); });
 
 function updatePreview(c) {
   const isRoad = state.tool === "street" || state.tool === "avenue";
